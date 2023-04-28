@@ -1,2 +1,16 @@
 # back-end-exercicios
-Repositorio para exercicios do Back end parte 2
+Repositorio para exercicios parte dois do modulo de backend; 
+
+
+- Assuntos abordados:
+
+    - [x]  POO I
+    - [x]  POO II
+    - [ ]  POO III
+    - [ ]  Arquitetura I
+    - [ ]  Arquitetura II
+    - [ ]  Arquitetura III
+    - [ ]  Arquitetura Limpa
+    - [ ]  Autenticação I
+    - [ ]  Autenticação II
+
