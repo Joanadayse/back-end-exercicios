@@ -1,7 +1,7 @@
 export class Videos{
     constructor(
         private id : string,
-        private titulo: string,
+        private title: string,
         private duracao: number,
         private create_at: string
     ){}
@@ -10,7 +10,7 @@ export class Videos{
         return this.id
     }
     getTitulo():string{
-        return this.titulo
+        return this.title
     }
     getDuracao():number{
         return this.duracao
