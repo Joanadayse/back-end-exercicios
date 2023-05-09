@@ -1,6 +1,12 @@
-export type TVideosDB={
-    id:string,
-    titulo: string,
-    duracao: number,
-    create_at:string
+export interface CursoDB{
+    id: string,
+    name: string,
+    quantity: number
+}
+
+export interface AlunosDB{
+    id: string,
+    name: string,
+    curso_id: string,
+    create_at: string
 }

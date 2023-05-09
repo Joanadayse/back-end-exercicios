@@ -6,7 +6,7 @@ Repositorio para exercicios parte dois do modulo de backend;
 
     - [x]  POO I
     - [x]  POO II
-    - [ ]  POO III
+    - [x]  POO III
     - [ ]  Arquitetura I
     - [ ]  Arquitetura II
     - [ ]  Arquitetura III
