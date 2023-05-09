@@ -3,6 +3,13 @@ export interface CursoDB{
     name: string,
     quantity: number
 }
+export interface UpdateCursos{
+    newId: string,
+    newName: string,
+    newQuantity: number
+}
+
+
 
 export interface AlunosDB{
     id: string,
