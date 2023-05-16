@@ -1,10 +1,12 @@
-import { knex } from "knex"
+import knex from "knex"
 
-export abstract class BaseDatabase {
+export abstract class BaseDataBase{
+
     protected static connection = knex({
         client: "sqlite3",
         connection: {
-            filename: "./src/database/arqui.db",
+            filename: "./src/database/arquitetura.db",
+
         },
         useNullAsDefault: true,
         pool: { 
@@ -15,4 +17,5 @@ export abstract class BaseDatabase {
             }
         }
     })
+
 }

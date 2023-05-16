@@ -1,9 +1,11 @@
 import { BaseError } from "./BaseError";
 
-export class BadRequestError extends BaseError {
+
+export class BadRequestError extends BaseError{
     constructor(
-        message: string = "Requisição inválida" // mensagem de erro padrão caso não seja enviado um argumento
-    ) {
+        message: string= "Requisição Invalida"
+    ){
+
         super(400, message)
     }
 }

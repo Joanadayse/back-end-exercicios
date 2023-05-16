@@ -1,19 +1,10 @@
-export interface CursoDB{
+export interface CousersDB{
     id: string,
     name: string,
-    quantity: number
+    lessons: number
 }
-export interface UpdateCursos{
+export interface UpdateCourses{
     newId: string,
     newName: string,
-    newQuantity: number
-}
-
-
-
-export interface AlunosDB{
-    id: string,
-    name: string,
-    curso_id: string,
-    create_at: string
+    newLessons: number
 }
