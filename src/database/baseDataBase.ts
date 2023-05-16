@@ -6,6 +6,7 @@ export abstract class BaseDataBase{
         client: "sqlite3",
         connection: {
             filename: "./src/database/arquitetura.db",
+
         },
         useNullAsDefault: true,
         pool: { 
