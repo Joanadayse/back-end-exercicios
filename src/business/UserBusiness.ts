@@ -4,21 +4,32 @@ import { LoginInputDTO, LoginOutputDTO } from "../dtos/login.dto"
 import { SignupInputDTO, SignupOutputDTO } from "../dtos/signup.dto"
 import { BadRequestError } from "../errors/BadRequestError"
 import { NotFoundError } from "../errors/NotFoundError"
-import { USER_ROLES, User } from "../models/User"
-import { IdGenerator } from "../service/IdGenerator"
-import { TokenManager, TokenPayload } from "../service/TokenManager"
+import { TokenPayload, USER_ROLES, User } from "../models/User"
+import { HashManager } from "../services/HashManager"
+import { IdGenerator } from "../services/IdGenerator"
+import { TokenManager } from "../services/TokenManager"
 
 export class UserBusiness {
   constructor(
     private userDatabase: UserDatabase,
     private idGenerator: IdGenerator,
-    private tokenManager: TokenManager
+    private tokenManager: TokenManager,
+    private hashManager: HashManager
   ) { }
 
   public getUsers = async (
     input: GetUsersInputDTO
   ): Promise<GetUsersOutputDTO> => {
-    const { q } = input
+    const { q ,token} = input
+
+    const payload = this.tokenManager.getPayload(token)
+    if (payload === null) {
+      throw new BadRequestError("token inválido")
+  }
+
+  if (payload.role !== USER_ROLES.ADMIN) {
+    throw new BadRequestError("somente admins podem acessar esse recurso")
+  }
 
     const usersDB = await this.userDatabase.findUsers(q)
 
@@ -43,16 +54,25 @@ export class UserBusiness {
   public signup = async (
     input: SignupInputDTO
   ): Promise<SignupOutputDTO> => {
-    const {  name, email, password } = input
+    // const { id, name, email, password } = input
+    const { name, email, password } = input
 
-    await this.userDatabase.findUserByEmail(email)
+    // const userDBExists = await this.userDatabase.findUserById(id)
 
-   const id= this.idGenerator.generate()
+    // if (userDBExists) {
+    //   throw new BadRequestError("'id' já existe")
+    // }
+
+    console.log(this)
+    const id = this.idGenerator.generate()
+
+    const hashManagerPassword= await this.hashManager.hash(password)
+
     const newUser = new User(
       id,
       name,
       email,
-      password,
+      hashManagerPassword,
       USER_ROLES.NORMAL, // só é possível criar users com contas normais
       new Date().toISOString()
     )
@@ -60,16 +80,19 @@ export class UserBusiness {
     const newUserDB = newUser.toDBModel()
     await this.userDatabase.insertUser(newUserDB)
 
-    const token= this.tokenManager.createToken({
-      id:newUser.getId(),
+    // modelagem do payload do token
+    const tokenPayload: TokenPayload = {
+      id: newUser.getId(),
       name: newUser.getName(),
-    role:newUser.getRole()
+      role: newUser.getRole()
+    }
 
-    })
+    // criação do token
+    const token = this.tokenManager.createToken(tokenPayload)
 
     const output: SignupOutputDTO = {
       message: "Cadastro realizado com sucesso",
-      token
+      token: token
     }
 
     return output
@@ -86,11 +109,17 @@ export class UserBusiness {
       throw new NotFoundError("'email' não encontrado")
     }
 
-    if (password !== userDB.password) {
-      throw new BadRequestError("'email' ou 'password' incorretos")
-    }
+    // if (password !== userDB.password) {
+    //   throw new BadRequestError("'email' ou 'password' incorretos")
+    // }
 
-    const user= new User(
+    const hashedPassword= userDB.password
+    const isPasswordCorrect= await this.hashManager.compare(password,hashedPassword)
+    if (!isPasswordCorrect) {
+      throw new BadRequestError("'email' ou 'password' incorretos")
+    } 
+
+    const user = new User(
       userDB.id,
       userDB.name,
       userDB.email,
@@ -99,18 +128,19 @@ export class UserBusiness {
       userDB.created_at
     )
 
-    const playload: TokenPayload={
+    // modelagem do payload do token
+    const tokenPayload: TokenPayload = {
       id: user.getId(),
       name: user.getName(),
-      role:user.getRole()
+      role: user.getRole()
     }
 
-    const token= this.tokenManager.createToken(playload)
+    // criação do token
+    const token = this.tokenManager.createToken(tokenPayload)
 
     const output: LoginOutputDTO = {
       message: "Login realizado com sucesso",
-      token,
-      
+      token: token
     }
 
     return output

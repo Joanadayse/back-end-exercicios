@@ -1,4 +1,4 @@
--- Active: 1685056416871@@127.0.0.1@3306
+-- Active: 1685482562391@@127.0.0.1@3306
 CREATE TABLE users (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     name TEXT NOT NULL,
@@ -13,3 +13,5 @@ VALUES
 	('u001', 'Fulano', 'fulano@email.com', 'fulano123', 'NORMAL'),
 	('u002', 'Beltrana', 'beltrana@email.com', 'beltrana00', 'NORMAL'),
 	('u003', 'Astrodev', 'astrodev@email.com', 'astrodev99', 'ADMIN');
+
+    SELECT * FROM users;
