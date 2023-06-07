@@ -7,10 +7,10 @@ Repositorio para exercicios parte dois do modulo de backend;
     - [x]  POO I
     - [x]  POO II
     - [x]  POO III
-    - [ ]  Arquitetura I
-    - [ ]  Arquitetura II
-    - [ ]  Arquitetura III
-    - [ ]  Arquitetura Limpa
-    - [ ]  Autenticação I
-    - [ ]  Autenticação II
+    - [x]  Arquitetura I
+    - [x]  Arquitetura II
+    - [x]  Arquitetura III
+    - [x]  Arquitetura Limpa
+    - [x]  Autenticação I
+    - [x]  Autenticação II
 
